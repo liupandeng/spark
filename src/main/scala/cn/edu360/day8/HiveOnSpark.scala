@@ -19,11 +19,11 @@ object HiveOnSpark {
     //想要使用hive的元数据库，必须指定hive元数据的位置，添加一个hive-site.xml到当前程序的classpath下即可
 
     //有t_boy这个表或试图吗？
-    //val result: DataFrame = spark.sql("SELECT * FROM t_boy ORDER BY fv DESC")
+    val result: DataFrame = spark.sql("select * from t_movie")
 
-    val sql: DataFrame = spark.sql("CREATE TABLE niu (id bigint, name string)")
+   // val sql: DataFrame = spark.sql("CREATE TABLE niu (id bigint, name string)")
 
-    sql.show()
+    result.show()
 
     //result.show()
 

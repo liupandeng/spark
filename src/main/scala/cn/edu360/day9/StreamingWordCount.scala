@@ -22,7 +22,7 @@ object StreamingWordCount {
     //有了StreamingContext，就可以创建SparkStreaming的抽象了DSteam
     //从一个socket端口中读取数据
     //在Linux上用yum安装nc
-    //yum install -y nc
+    //yum install -y nc     在192.168.11.212机器上  nc -lk 8888
     val lines: ReceiverInputDStream[String] = ssc.socketTextStream("192.168.11.212", 8888)
     //对DSteam进行操作，你操作这个抽象（代理，描述），就像操作一个本地的集合一样
     //切分压平

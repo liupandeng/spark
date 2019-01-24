@@ -12,7 +12,7 @@ object StatefulKafkaWordCount {
 
   /**
     * 第一个参数：聚合的key，就是单词
-    * 第二个参数：当前批次产生批次该单词在每一个分区出现的次数
+    * 第二个参数：当前批次 该单词在每一个分区出现的次数
     * 第三个参数：初始值或累加的中间结果
     */
   val updateFunc = (iter: Iterator[(String, Seq[Int], Option[Int])]) => {
@@ -26,11 +26,12 @@ object StatefulKafkaWordCount {
 
     val ssc = new StreamingContext(conf, Seconds(5))
 
-    //如果要使用课更新历史数据（累加），那么就要把终结结果保存起来
-    ssc.checkpoint("./ck")
+    //如果要使用历史数据（累加），那么就要把中间结果保存起来,此处是HDFS路径，要启动HDFS
+    //权限禁止，要在系统变量中指定HADOOP_USER_NAME
+    ssc.checkpoint("/ck")
 
-    val zkQuorum = "node-1:2181,node-2:2181,node-3:2181"
-    val groupId = "g100"
+    val zkQuorum = "hdp-01:2181,hdp-02:2181,hdp-03:2181"
+    val groupId = "g1"
     val topic = Map[String, Int]("xiaoniuabc" -> 1)
 
     //创建DStream，需要KafkaDStream

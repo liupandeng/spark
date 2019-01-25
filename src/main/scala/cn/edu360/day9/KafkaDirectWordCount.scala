@@ -24,16 +24,16 @@ object KafkaDirectWordCount {
     //创建SparkStreaming，并设置间隔时间
     val ssc = new StreamingContext(conf, Duration(5000))
     //指定消费的 topic 名字
-    val topic = "wwcc"
+    val topic = "wordcount1"
     //指定kafka的broker地址(sparkStream的Task直连到kafka的分区上，用更加底层的API消费，效率更高)
-    val brokerList = "node-4:9092,node-5:9092,node-6:9092"
+    val brokerList = "hdp-01:9092,hdp-02:9092,hdp-03:9092"
 
     //指定zk的地址，后期更新消费的偏移量时使用(以后可以使用Redis、MySQL来记录偏移量)
-    val zkQuorum = "node-1:2181,node-2:2181,node-3:2181"
+    val zkQuorum = "hdp-01:2181,hdp-02:2181,hdp-03:2181"
     //创建 stream 时使用的 topic 名字集合，SparkStreaming可同时消费多个topic
     val topics: Set[String] = Set(topic)
 
-    //创建一个 ZKGroupTopicDirs 对象,其实是指定往zk中写入数据的目录，用于保存偏移量
+    //创建一个 ZKGroupTopicDirs 对象,其实是往指定zk中写入数据的目录，用于保存偏移量
     val topicDirs = new ZKGroupTopicDirs(group, topic)
     //获取 zookeeper 中的路径 "/g001/offsets/wordcount/"
     val zkTopicPath = s"${topicDirs.consumerOffsetDir}"
@@ -123,10 +123,6 @@ object KafkaDirectWordCount {
     ssc.awaitTermination()
 
   }
-
-
-
-
 
 
 }
